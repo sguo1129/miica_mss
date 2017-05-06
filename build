@@ -1,0 +1,10 @@
+echo "   building parseMTL"
+g++ -O2 -o parseMTL parseMTL.cpp LandsatMTL.cpp utils.cpp -I/home/$USER/include -L/home/$USER/lib -lm -lgdal  
+
+echo "   building calcTOA"
+g++ -O2 -o calcTOA calcTOA.cpp ImageP_gdal.cpp readInfo.cpp utils.cpp -I/home/$USER/include -L/home/$USER/lib -lm -lgdal  
+
+echo "   building calcMIICA_noMask_MSS"
+g++ -O2 -o calcMIICA_noMask_MSS calcMIICA_noMask_MSS.cpp GeoImage.cpp -I/home/$USER/include -L/home/$USER/lib -lm -lgdal  
+
+#g++ -O2 -o calcMIICA_noMask_MSS calcMIICA_noMask_MSS.cpp GeoImage.cpp -I/home/sguo/gdal-2.1.3/include -L/home/sguo/gdal-2.1.3/lib -lm -lgdal  

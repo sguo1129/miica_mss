@@ -1,0 +1,14 @@
+compiled in code directory by running ./bild
+copy parseMTL & calcTOA executable files to the data directory (mssdata)
+from data directory, 
+./parseMTL LM50450301986135AAA03_MTL.txt
+./calcTOA -sc LM50450301985132AAA04_B1_info.txt
+./calcTOA -sc LM50450301985132AAA04_B2_info.txt
+./calcTOA -sc LM50450301985132AAA04_B3_info.txt
+./calcTOA -sc LM50450301985132AAA04_B4_info.txt
+
+from data directory
+./calcMIICA_noMask_MSS LM50450301985132AAA04 LM50450301986135AAA03 LM5045030_1985_1986
+
+from code directory
+./calcMIICA_noMask_MSS /shared/users/sguo/mss_data/LM50450301985132AAA04 /shared/users/sguo/mss_data/LM50450301986135AAA03 /shared/users/sguo/mss_data/LM5045030_1985_1986
