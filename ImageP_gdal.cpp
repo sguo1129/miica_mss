@@ -1,3 +1,6 @@
+
+
+
 #include "ImageP_gdal.h"
 
 // Constructor for IP_ONE_IN_ONE_OUT processing
@@ -340,9 +343,9 @@ void ImageP::process(void)
                else theDataOutI2[k] = evalI2(k);
             }
             if (outType == GDT_Byte) outputBand->RasterIO
-			(GF_Write, 0, j, ns, 1, theDataOut, ns, 1, outType, 0, 0);
+				       (GF_Write, 0, j, ns, 1, theDataOut, ns, 1, outType, 0, 0);
             else outputBand->RasterIO
-			(GF_Write, 0, j, ns, 1, theDataOutI2, ns, 1, outType, 0, 0);
+		   (GF_Write, 0, j, ns, 1, theDataOutI2, ns, 1, outType, 0, 0);
          }
       } 
    }
@@ -446,9 +449,9 @@ void ImageP::process(void)
                   else theDataOutI2[k] = evalI2(k);
                }
                if (outType == GDT_Byte) outputBand->RasterIO
-			(GF_Write, 0, j, ns, 1, theDataOut, ns, 1, outType, 0, 0);
+					  (GF_Write, 0, j, ns, 1, theDataOut, ns, 1, outType, 0, 0);
                else outputBand->RasterIO
-			(GF_Write, 0, j, ns, 1, theDataOutI2, ns, 1, outType, 0, 0);
+		      (GF_Write, 0, j, ns, 1, theDataOutI2, ns, 1, outType, 0, 0);
             }
          }
       }

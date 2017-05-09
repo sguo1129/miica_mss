@@ -12,3 +12,7 @@ from data directory
 
 from code directory
 ./calcMIICA_noMask_MSS /shared/users/sguo/mss_data/LM50450301985132AAA04 /shared/users/sguo/mss_data/LM50450301986135AAA03 /shared/users/sguo/mss_data/LM5045030_1985_1986
+
+Note: 
+Right now, run.sh can execute the above three processes automatically by running it from data directory,
+not from the code directory. It could be changed as needed of course.       
