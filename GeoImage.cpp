@@ -76,6 +76,11 @@ void GeoImage::openInputFile(string inFile)
    nb = theImage->GetRasterCount();
    theBand = theImage->GetRasterBand(1);
    gdalType = theBand->GetRasterDataType();
+   //   cout<<"nl="<<nl<<endl;
+   //   cout<<"ns="<<ns<<endl;
+   //   cout<<"nb="<<nb<<endl;
+   //   cout<<"Driver="<<theBand<<endl;
+   //   cout<<"gdalType="<<gdalType<<endl;
 }
 
 imageProperties GeoImage::getImageProperties(void) 
@@ -132,6 +137,16 @@ void GeoImage::readEntireFile()
       theBand = theImage->GetRasterBand(i+1);
       ImgPtr = theData[i];
       int errorNo = theBand->RasterIO(GF_Read, 0, 0, ns, nl, ImgPtr, ns, nl, gdalType, 0, 0);
+#if 0
+      gdalType = theBand->GetRasterDataType();
+      cout <<"gdalType="<<gdalType<<endl;
+
+      for (int j = 0; j < ns*nl; j++)
+      {
+        short *in1b1 = (short *)theData[i];
+	cout<<"j,ImgPtr[j]="<<j<<","<<in1b1[j]<<endl;
+      }
+#endif
       if (errorNo != 0) fatalError("Error reading file");
    }
 }

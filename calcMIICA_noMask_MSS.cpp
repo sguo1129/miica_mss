@@ -91,14 +91,14 @@ main(int argc, char *argv[]) {
    bool failFlag = false;
    int imgSize = outImageProps.nl * outImageProps.ns;
 
-   unsigned char *in1b1 = (unsigned char *)date11->theData[0];
-   unsigned char *in1b2 = (unsigned char *)date12->theData[0];
-   unsigned char *in1b3 = (unsigned char *)date13->theData[0];
-   unsigned char *in1b4 = (unsigned char *)date14->theData[0];
-   unsigned char *in2b1 = (unsigned char *)date21->theData[0];
-   unsigned char *in2b2 = (unsigned char *)date22->theData[0];
-   unsigned char *in2b3 = (unsigned char *)date23->theData[0];
-   unsigned char *in2b4 = (unsigned char *)date24->theData[0];
+   short *in1b1 = (short *)date11->theData[0];
+   short *in1b2 = (short *)date12->theData[0];
+   short *in1b3 = (short *)date13->theData[0];
+   short *in1b4 = (short *)date14->theData[0];
+   short *in2b1 = (short *)date21->theData[0];
+   short *in2b2 = (short *)date22->theData[0];
+   short *in2b3 = (short *)date23->theData[0];
+   short *in2b4 = (short *)date24->theData[0];
    
    short *dNBR = (short *)dNBRImage->theData[0];			// Output is 16-bit signed
    short *dNDVI = (short *)dNDVIImage->theData[0];			// Output is 16-bit signed
@@ -116,6 +116,9 @@ main(int argc, char *argv[]) {
 
    cout << "Calculating dNBR, dNDVI, max_cv, and cv" << endl;
    for (int i=0; i<imgSize; ++i) {
+
+     //     cout<<"in1b1[i],in1b2[i],in1b3[i],in1b4[i]="<<in1b1[i]<<","<<in1b2[i]<<","<<in1b3[i]<<","<<in1b4[i]<<endl;
+     //     cout<<"in2b1[i],in2b2[i],in2b3[i],in2b4[i]="<<in2b1[i]<<","<<in2b2[i]<<","<<in2b3[i]<<","<<in2b4[i]<<endl;
 
       // Apply the mask contained with each image 
       // ------------------------------------------------------------------------------
@@ -135,6 +138,8 @@ main(int argc, char *argv[]) {
       }
       else {
 
+         cout<<"in1b1[i],in1b2[i],in1b3[i],in1b4[i]="<<in1b1[i]<<","<<in1b2[i]<<","<<in1b3[i]<<","<<in1b4[i]<<endl;
+         cout<<"in2b1[i],in2b2[i],in2b3[i],in2b4[i]="<<in2b1[i]<<","<<in2b2[i]<<","<<in2b3[i]<<","<<in2b4[i]<<endl;
          // *********** dNBR **********************
          //
          // Calculate date2 NBR
@@ -146,6 +151,7 @@ main(int argc, char *argv[]) {
          else fnbr2 = (float)numer/(float)dNom;
          nbr2[i] = (failFlag) ? NBR_NO_DATA_VALUE : (unsigned char) ((fnbr2 * 100.0) + 100.0 + 0.5);
 
+	 cout << "nbr2[i]=" << nbr2[i] << endl;
          // Calculate data1 NBR
          // -------------------
          numer = in1b3[i] - in1b4[i];

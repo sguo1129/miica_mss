@@ -156,6 +156,9 @@ main(int argc, char *argv[]) {
     outProps.dtype = 2;                                // Signed short out
     outProps.processMode = IP_LINE_BY_LINE;
 
+    // Reset bandnumber to 1 as we are doing 1 band per file
+    //    theInfo.bandNum = 1
+
    // Process each band to TOA
    // ------------------------
    ImageTOA *theImage;

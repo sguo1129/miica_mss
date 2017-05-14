@@ -15,7 +15,7 @@
 
 main(int argc, char *argv[]) {
 
-   cout << "\nparseMTL v1.01, February 27, 2009\n";
+   cout << "\nparseMTL v1.02, April 27, 2017\n";
 
    // Parse input parameters, open files, and allocate buffers
    // --------------------------------------------------------

@@ -3,7 +3,7 @@
 
 // Constructor for reading entire input image (existing) into memory
 // -----------------------------------------------------------------
-GeoImage::GeoImage(std::string inFile) 
+GeoImage::GeoImage(string inFile) 
 {
    ioType = INPUT_FULLIMAGE;
    GDALAllRegister();
@@ -17,7 +17,7 @@ GeoImage::GeoImage(std::string inFile)
 
 // Constructor for output file processing
 // --------------------------------------
-GeoImage::GeoImage(std::string outFile, imageProperties *outProps, double *frame, std::string proj) 
+GeoImage::GeoImage(string outFile, imageProperties *outProps, double *frame, string proj) 
 {
    ioType = OUTPUT_FULLIMAGE;
    GDALAllRegister();
@@ -73,7 +73,7 @@ GeoImage::~GeoImage()
 
 // Open a single input image file
 // ------------------------------
-void GeoImage::openInputFile(std::string inFile)
+void GeoImage::openInputFile(string inFile)
 {
    theImage = (GDALDataset *) GDALOpen(inFile.c_str(), GA_ReadOnly ); 
    if( theImage == NULL ) fatalError ("Error opening input file");
@@ -95,7 +95,7 @@ imageProperties GeoImage::getImageProperties(void)
 
 // Open a single output image file
 // -------------------------------
-void GeoImage::openOutputFile(std::string outFile, imageProperties *outProps)
+void GeoImage::openOutputFile(string outFile, imageProperties *outProps)
 {
    GDALDriver *poDriver;
    const char *pszFormat = "GTiff";
@@ -219,7 +219,7 @@ void GeoImage::linearFilter(int theVal, int v1, int v2, int dim)
          }
       } 
    } 
-   //std::cout << "Number of pixels healed:  " << numPixelsHealed << std::endl;
+   //cout << "Number of pixels healed:  " << numPixelsHealed << endl;
 }
 
 // Filter out lone pixels in a mask.   This is single band, byte-only for now...
@@ -451,15 +451,15 @@ void GeoImage::calcStats(int maskVal)
    }
 }
 
-void GeoImage::fatalError(std::string message) 
+void GeoImage::fatalError(string message) 
 {
-   std::cout << message << std::endl;
+   cout << message << endl;
    exit(EXIT_FAILURE);
 }
 
-void GeoImage::debugMess(std::string message) 
+void GeoImage::debugMess(string message) 
 {
-   std::cout << message << std::endl;
+   cout << message << endl;
 }
 
 

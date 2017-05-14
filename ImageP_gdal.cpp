@@ -175,8 +175,11 @@ void ImageP::openOutputFile(string outFile, imgProps *outProps)
 {
    GDALDriver *poDriver;
    const char *pszFormat = "GTiff";
+   //   const char *pszFormat = "HFA";
    char **papszMetadata;
    double adfGeoTransform[6];    // GDAL geoTransform (framing) info
+
+   //   cout << "GDT_Int16=" << GDT_Int16 << endl;
 
    out_ns = outProps->ns;
    out_nl = outProps->nl;
@@ -244,6 +247,8 @@ void ImageP::openOutputFile(string outFile, imgProps *outProps)
          //cout << "   Pixels are upper-left referenced...\n";
       }
    } */
+
+   //   cout << "outType = " << outType << endl;
 
    // Create the output image handles
    // -------------------------------
@@ -319,7 +324,7 @@ void ImageP::process(void)
       // Process each band...
       // --------------------
       for (int i=0; i<nb; ++i) {
-         //cout << "Processing band " << i+1 << endl;
+	 //cout << "Processing band " << i+1 << endl;
          currentBand = i+1;
          outputBand = outputImage->GetRasterBand(i+1);
          inputBand = inputImage->GetRasterBand(i+1);
