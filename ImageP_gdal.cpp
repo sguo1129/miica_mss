@@ -1,6 +1,3 @@
-
-
-
 #include "ImageP_gdal.h"
 
 // Constructor for IP_ONE_IN_ONE_OUT processing
@@ -9,10 +6,12 @@ ImageP::ImageP(string inFile, string outFile, imgProps *outProps)
 {
    processType = IP_ONE_IN_ONE_OUT;
    GDALAllRegister();
+   //   cout << "inFlie.c_str()="<<inFlie.c_str()<<endl;
    openInputFile(inFile);
    if (outProps->nl == -1) outProps->nl = nl;
    if (outProps->ns == -1) outProps->ns = ns;
    if (outProps->nb == -1) outProps->nb = nb;
+   //   cout << "outFlie.c_str()="<<outFlie.c_str()<<endl;
    openOutputFile(outFile, outProps);
 }
 
@@ -179,8 +178,6 @@ void ImageP::openOutputFile(string outFile, imgProps *outProps)
    char **papszMetadata;
    double adfGeoTransform[6];    // GDAL geoTransform (framing) info
 
-   //   cout << "GDT_Int16=" << GDT_Int16 << endl;
-
    out_ns = outProps->ns;
    out_nl = outProps->nl;
    out_nb = outProps->nb;
@@ -319,6 +316,7 @@ void ImageP::processLine(int line)
 }
 void ImageP::process(void) 
 {
+   cout << "processType="<<processType<<endl;
    if (processType == IP_ONE_IN_ONE_OUT) 
    {
       // Process each band...
@@ -334,7 +332,8 @@ void ImageP::process(void)
          for (int j=0; j< nl; ++j) {
             currentLine = j;
             int errorNo = inputBand->RasterIO
-			(GF_Read, 0, j, ns, 1, theData, ns, 1, GDT_Float32, 0, 0);
+	        (GF_Read, 0, j, ns, 1, theData, ns, 1, GDT_Float32, 0, 0);
+	      //	(GF_Read, 0, j, ns, 1, theData, ns, 1, GDT_Int16, 0, 0);
             if (errorNo != 0) {
                cout << "Return Status from RasterIO for image1:  " << errorNo 
 			<< "; currLine = " << j << endl;
@@ -344,49 +343,28 @@ void ImageP::process(void)
             // Map each pixel 
             // ---------------------------------
             for (int k=0; k<ns; ++k) {
-               if (outType == GDT_Byte) theDataOut[k] = eval(k);
-               else theDataOutI2[k] = evalI2(k);
+               if (outType == GDT_Byte)
+	       { 
+                  theDataOut[k] = eval(k);
+	       }
+               else
+	       { 
+                  theDataOutI2[k] = evalI2(k);
+	       }
             }
-            if (outType == GDT_Byte) outputBand->RasterIO
-				       (GF_Write, 0, j, ns, 1, theDataOut, ns, 1, outType, 0, 0);
-            else outputBand->RasterIO
-		   (GF_Write, 0, j, ns, 1, theDataOutI2, ns, 1, outType, 0, 0);
+            if (outType == GDT_Byte) 
+	    {
+                outputBand->RasterIO
+	      	  (GF_Write, 0, j, ns, 1, theDataOut, ns, 1, outType, 0, 0);
+	    }
+            else 
+	    {
+                outputBand->RasterIO
+		    (GF_Write, 0, j, ns, 1, theDataOutI2, ns, 1, outType, 0, 0);
+	    }
          }
       } 
    }
-   /*else if (processType == IP_ONE_IN_FLATTEN)
-   {
-      // Process each band...
-      // --------------------
-      for (int i=0; i<nb; ++i) {
-         //cout << "Processing band " << i+1 << endl;
-         currentBand = i+1;
-         outputBand = outputImage->GetRasterBand(i+1);
-         inputBand = inputImage->GetRasterBand(i+1);
-
-         // Process each line...
-         // --------------------
-         for (int j=0; j< nl; ++j) {
-            currentLine = j;
-            int errorNo = inputBand->RasterIO(GF_Read, 0, j, ns, 1, theData, ns, 1, GDT_Float32, 0, 0);
-            if (errorNo != 0) {
-               cout << "Return Status from RasterIO for image1:  " << errorNo << "; currLine = " << j << endl;
-               //return EXIT_FAILURE;
-            }
-
-            // Map each pixel
-            // ---------------------------------
-            for (int k=0; k<ns; ++k) {
-               if (outType == GDT_Byte) theDataOut[k] = eval(k);
-               else theDataOutI2[k] = evalI2(k);
-            }
-            if (outType == GDT_Byte) outputBand->RasterIO
-                        (GF_Write, 0, j, ns, 1, theDataOut, ns, 1, outType, 0, 0);
-            else outputBand->RasterIO
-                        (GF_Write, 0, j, ns, 1, theDataOutI2, ns, 1, outType, 0, 0);
-         }
-      }
-   } */
    else if (processType == IP_ONE_IN_ZERO_OUT)
    {
       // Process each band...
@@ -403,7 +381,8 @@ void ImageP::process(void)
          for (int j=0; j< nl; ++j) {
             currentLine = j;
             int errorNo = inputBand->RasterIO
-                        (GF_Read, 0, j, ns, 1, theData, ns, 1, GDT_Float32, 0, 0);
+                        (GF_Read, 0, j, ns, 1, theData, ns, 1, GDT_Byte, 0, 0);
+	    //                        (GF_Read, 0, j, ns, 1, theData, ns, 1, GDT_Float32, 0, 0);
             if (errorNo != 0) {
                cout << "Return Status from RasterIO for image1:  " << errorNo
                         << "; currLine = " << j << endl;

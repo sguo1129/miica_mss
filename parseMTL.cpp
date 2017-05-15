@@ -3,6 +3,7 @@
 //  Parses an MTL file to get Landfire/MTBS/MRLC specific information
 //
 //  Dan Steinwand, USGS/EROS, January 8, 2009
+//  Song Guo, USGS/EROS, May 18, 2017, modified the code to work for Landsat MSS data
 // -----------------------------------------------------------------------------
 #include <fstream>
 #include <cstdlib>

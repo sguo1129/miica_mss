@@ -4,6 +4,7 @@
 //
 //  Dan Steinwand, USGS/EROS, October 15, 2008
 //  Dan Steinwand, USGS/EROS, January 12, 2009 -- made more generic; parser is now external
+//  Song Guo, USGS/EROS, May 18, 2017, modified the code to work for Landsat MSS data
 // ----------------------------------------------------------------------------------------
 #include <cstdio>
 #include <iostream>
@@ -63,6 +64,7 @@ short ImageTOA::evalI2(int k) {
    val *= 10000.0;
    if (val > 10000.0) val = 10000.0;
    if (val < 0.0) val = 0.0;
+   //   cout << "val="<<val<<endl;
    return (short)(val + 0.5); 
 }
 

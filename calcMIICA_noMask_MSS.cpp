@@ -1,3 +1,9 @@
+//  Calc
+// 
+//  Calculates no mask MIICS algorithm using Landsat MSS data
+//
+//  Song Guo, USGS/EROS, May 18, 2017, modified the code to work for Landsat MSS data
+// ----------------------------------------------------------------------------------------
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -116,10 +122,6 @@ main(int argc, char *argv[]) {
 
    cout << "Calculating dNBR, dNDVI, max_cv, and cv" << endl;
    for (int i=0; i<imgSize; ++i) {
-
-     //     cout<<"in1b1[i],in1b2[i],in1b3[i],in1b4[i]="<<in1b1[i]<<","<<in1b2[i]<<","<<in1b3[i]<<","<<in1b4[i]<<endl;
-     //     cout<<"in2b1[i],in2b2[i],in2b3[i],in2b4[i]="<<in2b1[i]<<","<<in2b2[i]<<","<<in2b3[i]<<","<<in2b4[i]<<endl;
-
       // Apply the mask contained with each image 
       // ------------------------------------------------------------------------------
       if ((in1b1[i] <= 1) || (in1b2[i] <= 1) || (in1b3[i] <= 1) || (in1b4[i] <= 1) ||
@@ -138,8 +140,6 @@ main(int argc, char *argv[]) {
       }
       else {
 
-         cout<<"in1b1[i],in1b2[i],in1b3[i],in1b4[i]="<<in1b1[i]<<","<<in1b2[i]<<","<<in1b3[i]<<","<<in1b4[i]<<endl;
-         cout<<"in2b1[i],in2b2[i],in2b3[i],in2b4[i]="<<in2b1[i]<<","<<in2b2[i]<<","<<in2b3[i]<<","<<in2b4[i]<<endl;
          // *********** dNBR **********************
          //
          // Calculate date2 NBR
@@ -151,7 +151,6 @@ main(int argc, char *argv[]) {
          else fnbr2 = (float)numer/(float)dNom;
          nbr2[i] = (failFlag) ? NBR_NO_DATA_VALUE : (unsigned char) ((fnbr2 * 100.0) + 100.0 + 0.5);
 
-	 cout << "nbr2[i]=" << nbr2[i] << endl;
          // Calculate data1 NBR
          // -------------------
          numer = in1b3[i] - in1b4[i];
