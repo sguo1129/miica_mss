@@ -15,6 +15,7 @@
 #include "ImageP_gdal.h"
 #include "readInfo.h"
 #include "utils.h"
+#include <cstdlib>
 
 #define SCENE_CENTER_ANGLE	1001
 #define ZENITH_SUN		1002
@@ -71,7 +72,7 @@ short ImageTOA::evalI2(int k) {
 
 main(int argc, char *argv[]) {
 
-   cout << "\ncalcTOA v6.05, June 29, 2009\n";
+   cout << "\ncalcTOA for MSS data, May 18, 2017\n";
 
    // Parse input parameters, open files, and allocate buffers
    // --------------------------------------------------------
@@ -138,6 +139,16 @@ main(int argc, char *argv[]) {
 
     //   sprintf(full_path,"%s/%s",path,"EarthSunDistance.txt");
     ifstream inFile;
+
+#if 0 
+    cout << "getenv="<<getenv("MIICA_MSS")<<endl;
+    string eSunFileName = getenv("MIICA_MSS") + "/EarthSunDistance.txt";
+    cout << "eSunFileName = " << eSunFileName << endl;
+    inFile.open(eSunFileName);
+    if (!inFile) {
+      cout << "Unable to open file";
+    }
+#endif
 
     inFile.open("EarthSunDistance.txt");
     if (!inFile) {

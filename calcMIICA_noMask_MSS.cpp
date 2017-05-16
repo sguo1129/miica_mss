@@ -1,6 +1,6 @@
 //  Calc
 // 
-//  Calculates no mask MIICS algorithm using Landsat MSS data
+//  Calculates no mask MIICA algorithm using Landsat MSS data
 //
 //  Song Guo, USGS/EROS, May 18, 2017, modified the code to work for Landsat MSS data
 // ----------------------------------------------------------------------------------------

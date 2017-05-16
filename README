@@ -1,19 +1,9 @@
 compiled in code directory by running ./bild
-copy parseMTL & calcTOA executable files to the data directory (mssdata)
-from data directory, 
-./parseMTL LM50450301986135AAA03_MTL.txt
-./calcTOA -sc LM50450301985132AAA04_B1_info.txt
-./calcTOA -sc LM50450301985132AAA04_B2_info.txt
-./calcTOA -sc LM50450301985132AAA04_B3_info.txt
-./calcTOA -sc LM50450301985132AAA04_B4_info.txt
 
-from data directory
-./calcMIICA_noMask_MSS LM50450301985132AAA04 LM50450301986135AAA03 LM5045030_1985_1986
+The script needs 4 input cariables, the first one is data directory name, the second one
+is first processing scene_name name, the third one is second processing name, the fourth one is 
+output name. The input and final output files are in the data directory, and the temporary text 
+files are in the current code directory and will be removed after their usages
 
-from code directory
-./calcMIICA_noMask_MSS /shared/users/sguo/mss_data/LM50450301985132AAA04 /shared/users/sguo/mss_data/LM50450301986135AAA03 /shared/users/sguo/mss_data/LM5045030_1985_1986
+e.g. ./run.sh /shared/users/sguo/mss_data LM50450301985132AAA04 LM50450301986135AAA03 LM5045030_1985_1986
 
-Note: 
-Right now, run.sh can execute the above three processes automatically by running it from data directory,
-not from the code directory. It could be changed as needed of course.       
-Also, EarthSunDistance.txt needs to be in data directory foe now.

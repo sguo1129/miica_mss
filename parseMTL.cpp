@@ -31,6 +31,10 @@ main(int argc, char *argv[]) {
    // -------------------------------------------
    metaDataL1T *myMTL = new metaDataL1T(argv[1]);
 
+    string input(argv[1]);
+    string path;
+    path = input.substr(0, input.find_last_of("\\/"));
+
    // Get the scene date
    // ------------------
    string aqDate = myMTL->get("DATE_ACQUIRED");	
@@ -38,7 +42,6 @@ main(int argc, char *argv[]) {
    int month = getMonth(aqDate);
    int day = getDay(aqDate);
 
-   cout << "year="<<year<<endl;
    // Get the scene time
    // ------------------
    string aqTime = myMTL->get("SCENE_CENTER_TIME");
@@ -83,7 +86,7 @@ main(int argc, char *argv[]) {
    vector<string> fName;
    for (int i=1; i<=4; ++i) {
       theKey = "FILE_NAME_BAND_" + itos(i);
-      fName.push_back(stripQ(myMTL->get(theKey)));
+      fName.push_back(path + '/' + stripQ(myMTL->get(theKey)));
    }
 
    // Create output file names for each band
