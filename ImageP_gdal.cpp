@@ -316,7 +316,6 @@ void ImageP::processLine(int line)
 }
 void ImageP::process(void) 
 {
-   cout << "processType="<<processType<<endl;
    if (processType == IP_ONE_IN_ONE_OUT) 
    {
       // Process each band...

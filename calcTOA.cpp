@@ -23,7 +23,7 @@
    class ImageTOA: public ImageP {
    public:
       ImageTOA(string inFile, string outFile, imgProps *outProps) : ImageP(inFile, outFile, outProps) {}
-      virtual unsigned char eval(int k) {};
+      virtual unsigned char eval(int k);
       virtual short evalI2(int k);
       void setParms(float pLMin, float pLMax, float pQCalMin, float pQCalMax, double pD, double pCosSolarZ, int pBand,
 				string pSatID);
@@ -55,15 +55,29 @@ void ImageTOA::setParms(float LMin, float LMax, float QCalMin, float QCalMax, do
          myConst = (PI * d * d) / (esun_mss_5[band] * cosSolarZ);
 
    cout << "\n   Band" << band << " Correction:  TOAVal = ((" << gain << " * (DN - " << DNoffset << ")) + " << bias << ") * " << myConst << endl;
-   cout << "     then, multiply by 10,000.0, add 0.5, and truncate to the nearest integer...\n\n";
+   //   cout << "     then, multiply by 10,000.0, add 0.5, and truncate to the nearest integer...\n\n";
+   cout << "     then, multiply by 400.0, add 0.5, and truncate to the nearest integer...\n\n";
+}
+
+unsigned char ImageTOA::eval(int k) { 
+   if (fabs(theData[k] < 0.001)) return 0.0;				// Fill condition
+   double val = (gain * ((double)theData[k] - DNoffset)) + bias;
+   val *= myConst;
+   //   val *= 10,000.0;
+   //   if (val > 10,000.0) val = 10,000.0;
+   val *= 400.0;
+   if (val > 255.0) val = 255.0;
+   if (val < 0.0) val = 0.0;
+   //   cout << "val="<<val<<endl;
+   return (unsigned char)(val + 0.5); 
 }
 
 short ImageTOA::evalI2(int k) { 
    if (fabs(theData[k] < 0.001)) return -500;				// Fill condition
    double val = (gain * ((double)theData[k] - DNoffset)) + bias;
    val *= myConst;
-   val *= 10000.0;
-   if (val > 10000.0) val = 10000.0;
+   val *= 10,000.0;
+   if (val > 10,000.0) val = 10,000.0;
    if (val < 0.0) val = 0.0;
    //   cout << "val="<<val<<endl;
    return (short)(val + 0.5); 
@@ -166,7 +180,8 @@ main(int argc, char *argv[]) {
     // -----------------------------------------------------------------
     imgProps outProps;
     outProps.nl = outProps.ns = outProps.nb = -1;      // Default to input size
-    outProps.dtype = 2;                                // Signed short out
+    //    outProps.dtype = 2;                                // Signed short out
+    outProps.dtype = 1;                                // Unigned char out
     outProps.processMode = IP_LINE_BY_LINE;
 
     // Reset bandnumber to 1 as we are doing 1 band per file

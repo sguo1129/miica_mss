@@ -97,14 +97,14 @@ main(int argc, char *argv[]) {
    bool failFlag = false;
    int imgSize = outImageProps.nl * outImageProps.ns;
 
-   short *in1b1 = (short *)date11->theData[0];
-   short *in1b2 = (short *)date12->theData[0];
-   short *in1b3 = (short *)date13->theData[0];
-   short *in1b4 = (short *)date14->theData[0];
-   short *in2b1 = (short *)date21->theData[0];
-   short *in2b2 = (short *)date22->theData[0];
-   short *in2b3 = (short *)date23->theData[0];
-   short *in2b4 = (short *)date24->theData[0];
+   unsigned char *in1b1 = (unsigned char *)date11->theData[0];
+   unsigned char *in1b2 = (unsigned char *)date12->theData[0];
+   unsigned char *in1b3 = (unsigned char *)date13->theData[0];
+   unsigned char *in1b4 = (unsigned char *)date14->theData[0];
+   unsigned char *in2b1 = (unsigned char *)date21->theData[0];
+   unsigned char *in2b2 = (unsigned char *)date22->theData[0];
+   unsigned char *in2b3 = (unsigned char *)date23->theData[0];
+   unsigned char *in2b4 = (unsigned char *)date24->theData[0];
    
    short *dNBR = (short *)dNBRImage->theData[0];			// Output is 16-bit signed
    short *dNDVI = (short *)dNDVIImage->theData[0];			// Output is 16-bit signed
@@ -270,8 +270,8 @@ main(int argc, char *argv[]) {
    // Calculate MIICA
    // ---------------
    cout << "Calculating miica" << endl;
-   int threshold = 100;
-
+   //   int threshold = 100;
+   int threshold = 67;
    for (int i=0; i<imgSize; ++i) {
       if ((cv[i] == 0 ) || (rcvmax[i] == 0) || (dNBR[i] == -999) || (dNDVI[i] == -999)) miica[i] = MIICA_NO_DATA_VALUE;
       else {
