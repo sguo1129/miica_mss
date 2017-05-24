@@ -7,3 +7,8 @@ files are in the current code directory and will be removed after their usages
 
 e.g. ./run.sh /shared/users/sguo/mss_data LM50450301985132AAA04 LM50450301986135AAA03 LM5045030_1985_1986
 
+Note: This code is only working for Landsat Archive Pre-Collection Level-1 L1-5
+      MSS data, with some modification of filename and metadata, it can work
+      for Landsat Legacy L1-5 MSS data 
+
+

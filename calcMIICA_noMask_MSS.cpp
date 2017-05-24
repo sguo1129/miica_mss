@@ -3,6 +3,10 @@
 //  Calculates no mask MIICA algorithm using Landsat MSS data
 //
 //  Song Guo, USGS/EROS, May 18, 2017, modified the code to work for Landsat MSS data
+//
+//  Note: This code is only working for Landsat Archive Pre-Collection Level-1 L1-5
+//        MSS data, with some modification of filename and metadata, it can work
+//        for Landsat Legacy L1-5 MSS data 
 // ----------------------------------------------------------------------------------------
 #include <iostream>
 #include <sstream>
@@ -27,6 +31,8 @@ main(int argc, char *argv[]) {
    string date1GTiffRoot = argv[1];
    string date2GTiffRoot = argv[2];
    string outImgRoot = argv[3];
+   string sceneName1 = argv[1];
+   string sceneName2 = argv[2];
    
    string ndvi1File = date1GTiffRoot + "_ndvi.img";
    string ndvi2File = date2GTiffRoot + "_ndvi.img";
@@ -38,34 +44,133 @@ main(int argc, char *argv[]) {
 
    // Prepare Imagery for processing
    // ------------------------------
-   stringstream ss;
-   stringstream ss2;
-   stringstream ss3;
-   stringstream ss4;
-   ss << 1;
-   string str = ss.str();
-   string fileName11 =date1GTiffRoot  + "_B" + str + "_TOAsc.TIF";
-   string fileName21 =date2GTiffRoot  + "_B" + str + "_TOAsc.TIF";
-   GeoImage *date11 = new GeoImage(fileName11);
-   GeoImage *date21 = new GeoImage(fileName21);
-   ss2 << 2;
-   string str2 = ss2.str();
-   string fileName12 =date1GTiffRoot  + "_B" + str2 + "_TOAsc.TIF";
-   string fileName22 =date2GTiffRoot  + "_B" + str2 + "_TOAsc.TIF";
-   GeoImage *date12 = new GeoImage(fileName12);
-   GeoImage *date22 = new GeoImage(fileName22);
-   ss3 << 3;
-   string str3 = ss3.str();
-   string fileName13 =date1GTiffRoot  + "_B" + str3 + "_TOAsc.TIF";
-   string fileName23 =date2GTiffRoot  + "_B" + str3 + "_TOAsc.TIF";
-   GeoImage *date13 = new GeoImage(fileName13);
-   GeoImage *date23 = new GeoImage(fileName23);
-   ss4 << 4;
-   string str4 = ss4.str();
-   string fileName14 =date1GTiffRoot  + "_B" + str4 + "_TOAsc.TIF";
-   string fileName24 =date2GTiffRoot  + "_B" + str4 + "_TOAsc.TIF";
-   GeoImage *date14 = new GeoImage(fileName14);
-   GeoImage *date24 = new GeoImage(fileName24);
+   stringstream ss11;
+   stringstream ss12;
+   stringstream ss13;
+   stringstream ss14;
+   stringstream ss21;
+   stringstream ss22;
+   stringstream ss23;
+   stringstream ss24;
+   GeoImage *date11;
+   GeoImage *date12;
+   GeoImage *date13;
+   GeoImage *date14;
+   GeoImage *date21;
+   GeoImage *date22;
+   GeoImage *date23;
+   GeoImage *date24;
+   string str;
+   string str2;
+   string str3;
+   string str4;
+   string fileName11;
+   string fileName12;
+   string fileName13;
+   string fileName14;
+   string fileName21;
+   string fileName22;
+   string fileName23;
+   string fileName24;
+
+   const size_t last_slash_idx = sceneName1.find_last_of("\\/");
+   if (string::npos != last_slash_idx)
+   {
+       sceneName1.erase(0, last_slash_idx + 1);
+   }
+   const size_t last_slash_idx2 = sceneName2.find_last_of("\\/");
+   if (string::npos != last_slash_idx2)
+   {
+       sceneName2.erase(0, last_slash_idx2 + 1);
+   }
+
+   if (sceneName1.at(2) == '1' || sceneName1.at(2) == '2' || sceneName1.at(2) == '3')
+   {
+       ss11 << 4;
+       str = ss11.str();
+       fileName11 =date1GTiffRoot  + "_B" + str + "_TOAsc.TIF";
+       date11 = new GeoImage(fileName11);
+       ss12 << 5;
+       str2 = ss12.str();
+       fileName12 =date1GTiffRoot  + "_B" + str2 + "_TOAsc.TIF";
+       date12 = new GeoImage(fileName12);
+       ss13 << 6;
+       str3 = ss13.str();
+       fileName13 =date1GTiffRoot  + "_B" + str3 + "_TOAsc.TIF";
+       date13 = new GeoImage(fileName13);
+       ss14 << 7;
+       str4 = ss14.str();
+       fileName14 =date1GTiffRoot  + "_B" + str4 + "_TOAsc.TIF";
+       date14 = new GeoImage(fileName14);
+   }
+   else if (sceneName1.at(2) == '4' || sceneName1.at(2) == '5')
+   {
+       ss11 << 1;
+       str = ss11.str();
+       fileName11 =date1GTiffRoot  + "_B" + str + "_TOAsc.TIF";
+       date11 = new GeoImage(fileName11);
+       ss12 << 2;
+       str2 = ss12.str();
+       fileName12 =date1GTiffRoot  + "_B" + str2 + "_TOAsc.TIF";
+       date12 = new GeoImage(fileName12);
+       ss13 << 3;
+       str3 = ss13.str();
+       fileName13 =date1GTiffRoot  + "_B" + str3 + "_TOAsc.TIF";
+       date13 = new GeoImage(fileName13);
+       ss14 << 4;
+       str4 = ss14.str();
+       fileName14 =date1GTiffRoot  + "_B" + str4 + "_TOAsc.TIF";
+       date14 = new GeoImage(fileName14);
+   }
+   else 
+   {
+      cout << "Unsupport sensor number for MSS data" << endl;
+      return EXIT_FAILURE;
+   }
+
+   if (sceneName2.at(2) == '1' || sceneName2.at(2) == '2' || sceneName2.at(2) == '3')
+   {
+       ss21 << 4;
+       str = ss21.str();
+       fileName21 =date2GTiffRoot  + "_B" + str + "_TOAsc.TIF";
+       date21 = new GeoImage(fileName21);
+       ss22 << 5;
+       str2 = ss22.str();
+       fileName22 =date2GTiffRoot  + "_B" + str2 + "_TOAsc.TIF";
+       date22 = new GeoImage(fileName22);
+       ss23 << 6;
+       str3 = ss23.str();
+       fileName23 =date2GTiffRoot  + "_B" + str3 + "_TOAsc.TIF";
+       date23 = new GeoImage(fileName23);
+       ss24 << 7;
+       str4 = ss24.str();
+       fileName24 =date2GTiffRoot  + "_B" + str4 + "_TOAsc.TIF";
+       date24 = new GeoImage(fileName24);
+   }
+   else if (sceneName2.at(2) == '4' || sceneName2.at(2) == '5')
+   {
+       ss21 << 1;
+       str = ss21.str();
+       fileName21 =date2GTiffRoot  + "_B" + str + "_TOAsc.TIF";
+       date21 = new GeoImage(fileName21);
+       ss22 << 2;
+       str2 = ss22.str();
+       fileName22 =date2GTiffRoot  + "_B" + str2 + "_TOAsc.TIF";
+       date22 = new GeoImage(fileName22);
+       ss23 << 3;
+       str3 = ss23.str();
+       fileName23 =date2GTiffRoot  + "_B" + str3 + "_TOAsc.TIF";
+       date23 = new GeoImage(fileName23);
+       ss24 << 4;
+       str4 = ss24.str();
+       fileName24 =date2GTiffRoot  + "_B" + str4 + "_TOAsc.TIF";
+       date24 = new GeoImage(fileName24);
+   }
+   else 
+   {
+      cout << "Unsupport sensor number for MSS data" << endl;
+      return EXIT_FAILURE;
+   }
 
    imageProperties outImageProps = date11->getImageProperties();
    outImageProps.nb = 1;	// Single band output

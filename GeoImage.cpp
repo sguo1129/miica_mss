@@ -76,11 +76,13 @@ void GeoImage::openInputFile(string inFile)
    nb = theImage->GetRasterCount();
    theBand = theImage->GetRasterBand(1);
    gdalType = theBand->GetRasterDataType();
-   //   cout<<"nl="<<nl<<endl;
-   //   cout<<"ns="<<ns<<endl;
-   //   cout<<"nb="<<nb<<endl;
-   //   cout<<"Driver="<<theBand<<endl;
-   //   cout<<"gdalType="<<gdalType<<endl;
+#if 0
+   cout<<"nl="<<nl<<endl;
+   cout<<"ns="<<ns<<endl;
+   cout<<"nb="<<nb<<endl;
+   cout<<"Driver="<<theBand<<endl;
+   cout<<"gdalType="<<gdalType<<endl;
+#endif
 }
 
 imageProperties GeoImage::getImageProperties(void) 

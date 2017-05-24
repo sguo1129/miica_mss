@@ -32,8 +32,15 @@ main(int argc, char *argv[]) {
    metaDataL1T *myMTL = new metaDataL1T(argv[1]);
 
     string input(argv[1]);
+    string sceneName = argv[1];
     string path;
     path = input.substr(0, input.find_last_of("\\/"));
+
+    const size_t last_slash_idx = sceneName.find_last_of("\\/");
+    if (string::npos != last_slash_idx)
+    {
+        sceneName.erase(0, last_slash_idx + 1);
+    }
 
    // Get the scene date
    // ------------------
@@ -64,10 +71,25 @@ main(int argc, char *argv[]) {
    vector<float> LMin;
    string theKey;
    for (int i=1; i<=4; ++i) {
-      theKey = "RADIANCE_MAXIMUM_BAND_" + itos(i);
-      LMax.push_back(atof((myMTL->get(theKey).c_str())));
-      theKey = "RADIANCE_MINIMUM_BAND_" + itos(i);
-      LMin.push_back(atof((myMTL->get(theKey).c_str())));
+       if (sceneName.at(2) == '1' || sceneName.at(2) == '2' || sceneName.at(2) == '3')
+       {
+           theKey = "RADIANCE_MAXIMUM_BAND_" + itos(i+3);
+           LMax.push_back(atof((myMTL->get(theKey).c_str())));
+           theKey = "RADIANCE_MINIMUM_BAND_" + itos(i+3);
+           LMin.push_back(atof((myMTL->get(theKey).c_str())));
+       }
+       else if (sceneName.at(2) == '4' || sceneName.at(2) == '5')
+       {
+           theKey = "RADIANCE_MAXIMUM_BAND_" + itos(i);
+           LMax.push_back(atof((myMTL->get(theKey).c_str())));
+           theKey = "RADIANCE_MINIMUM_BAND_" + itos(i);
+           LMin.push_back(atof((myMTL->get(theKey).c_str())));
+       }
+       else 
+       {
+           cout << "Unsupport sensor number for MSS data" << endl;
+           return EXIT_FAILURE;
+       }
    }
 
    // Get QCalMin and QCalMax values for each band
@@ -75,54 +97,127 @@ main(int argc, char *argv[]) {
    vector<float> QCalMax;
    vector<float> QCalMin;
    for (int i=1; i<=4; ++i) {
-      theKey = "QUANTIZE_CAL_MAX_BAND_" + itos(i);
-      QCalMax.push_back(atof((myMTL->get(theKey).c_str())));
-      theKey = "QCALMIN_CAL_MIN_BAND_" + itos(i);
-      QCalMin.push_back(atof((myMTL->get(theKey).c_str())));
+       if (sceneName.at(2) == '1' || sceneName.at(2) == '2' || sceneName.at(2) == '3')
+       {
+           theKey = "QUANTIZE_CAL_MAX_BAND_" + itos(i + 3);
+           QCalMax.push_back(atof((myMTL->get(theKey).c_str())));
+           theKey = "QCALMIN_CAL_MIN_BAND_" + itos(i + 3);
+           QCalMin.push_back(atof((myMTL->get(theKey).c_str())));
+       }
+       else if (sceneName.at(2) == '4' || sceneName.at(2) == '5')
+       {
+           theKey = "QUANTIZE_CAL_MAX_BAND_" + itos(i);
+           QCalMax.push_back(atof((myMTL->get(theKey).c_str())));
+           theKey = "QCALMIN_CAL_MIN_BAND_" + itos(i);
+           QCalMin.push_back(atof((myMTL->get(theKey).c_str())));
+       }
+       else 
+       {
+           cout << "Unsupport sensor number for MSS data" << endl;
+           return EXIT_FAILURE;
+       }
    }
 
    // Get the filenames for each band
    // -------------------------------
    vector<string> fName;
    for (int i=1; i<=4; ++i) {
-      theKey = "FILE_NAME_BAND_" + itos(i);
-      fName.push_back(path + '/' + stripQ(myMTL->get(theKey)));
+       if (sceneName.at(2) == '1' || sceneName.at(2) == '2' || sceneName.at(2) == '3')
+       {
+           theKey = "FILE_NAME_BAND_" + itos(i + 3);
+           fName.push_back(path + '/' + stripQ(myMTL->get(theKey)));
+       }
+       else if (sceneName.at(2) == '4' || sceneName.at(2) == '5')
+       {
+           theKey = "FILE_NAME_BAND_" + itos(i);
+           fName.push_back(path + '/' + stripQ(myMTL->get(theKey)));
+       }
+       else 
+       {
+           cout << "Unsupport sensor number for MSS data" << endl;
+           return EXIT_FAILURE;
+       }
    }
 
    // Create output file names for each band
    // --------------------------------------
    vector<string> fNameOut;
    for (int i=0; i<4; ++i) {
-      fNameOut.push_back(fName[i].substr(0, fName[i].find('.')) + "_info.txt");
+           fNameOut.push_back(fName[i].substr(0, fName[i].find('.')) + "_info.txt");
    }
 
    for (int i=0; i<4; ++i) {
-      ofstream to(fNameOut[i].c_str());
-      if (!to) {
-          cout << "   ERROR:  Cannot open output file " << fNameOut[i] << endl;
-          return EXIT_FAILURE;
-      }
-      to << "FileName: " << fName[i] << endl;
-      to << "Band:     " << i+1 << endl;
-      to << "Spacecraft:  " << satID << endl;
-      to << "Sensor:      " << sensor << endl;
-      to << "Acquisition-Date:    " << aqDate << endl;
-      to << "Acquisition-Time:    " << aqTime << endl;
-      to << "Sun-Elevation:       " << myMTL->get("SUN_ELEVATION") << endl;
-      float bias = LMin[i] - (((LMax[i] - LMin[i])/(QCalMax[i] - QCalMin[i])) * QCalMin[i]) ;
-      float gain = (LMax[i]-LMin[i])/(QCalMax[i]-QCalMin[i]);
-      to << "Gain:     " << gain << endl;
-      to << "Bias:     " << bias << endl;
-      to << "LMin:     " << LMin[i] << endl;
-      to << "LMax:     " << LMax[i] << endl;
-      to << "QCalMin:  " << QCalMin[i] << endl;
-      to << "QCalMax:  " << QCalMax[i] << endl;
-      to.setf(ios_base::fixed, ios_base::floatfield);
-      to << "ULx:      " << ULx << endl;
-      to << "ULy:      " << ULy << endl;
-      to << "LRx:      " << LRx << endl;
-      to << "LRy:      " << LRy << endl;
-      to.close();
+       if (sceneName.at(2) == '1' || sceneName.at(2) == '2' || sceneName.at(2) == '3')
+       {
+           ofstream to(fNameOut[i].c_str());
+           if (!to) {
+               cout << "   ERROR:  Cannot open output file " << fNameOut[i] << endl;
+               return EXIT_FAILURE;
+	   }
+           to << "FileName: " << fName[i] << endl;
+           to << "Band:     " << i+4 << endl;
+           to << "Spacecraft:  " << satID << endl;
+           to << "Sensor:      " << sensor << endl;
+           to << "Acquisition-Date:    " << aqDate << endl;
+           to << "Acquisition-Time:    " << aqTime << endl;
+           to << "Sun-Elevation:       " << myMTL->get("SUN_ELEVATION") << endl;
+           float bias = LMin[i] - (((LMax[i] - LMin[i])/(QCalMax[i] - QCalMin[i])) * QCalMin[i]) ;
+           float gain = (LMax[i]-LMin[i])/(QCalMax[i]-QCalMin[i]);
+           to << "Gain:     " << gain << endl;
+           to << "Bias:     " << bias << endl;
+           to << "LMin:     " << LMin[i] << endl;
+           to << "LMax:     " << LMax[i] << endl;
+           to << "QCalMin:  " << QCalMin[i] << endl;
+           to << "QCalMax:  " << QCalMax[i] << endl;
+           to.setf(ios_base::fixed, ios_base::floatfield);
+           to << "ULx:      " << ULx << endl;
+           to << "ULy:      " << ULy << endl;
+           to << "LRx:      " << LRx << endl;
+           to << "LRy:      " << LRy << endl;
+           to.close();
+       }
+       else if (sceneName.at(2) == '4' || sceneName.at(2) == '5')
+       {
+           ofstream to(fNameOut[i].c_str());
+           if (!to) {
+               cout << "   ERROR:  Cannot open output file " << fNameOut[i] << endl;
+               return EXIT_FAILURE;
+	   }
+           to << "FileName: " << fName[i] << endl;
+           if (sceneName.at(2) == '1' || sceneName.at(2) == '2' || sceneName.at(2) == '3')
+               to << "Band:     " << i+4 << endl;
+           else if (sceneName.at(2) == '4' || sceneName.at(2) == '5')
+               to << "Band:     " << i+1 << endl;
+           else 
+           {
+               cout << "Unsupport sensor number for MSS data" << endl;
+               return EXIT_FAILURE;
+           }	   
+           to << "Spacecraft:  " << satID << endl;
+           to << "Sensor:      " << sensor << endl;
+           to << "Acquisition-Date:    " << aqDate << endl;
+           to << "Acquisition-Time:    " << aqTime << endl;
+           to << "Sun-Elevation:       " << myMTL->get("SUN_ELEVATION") << endl;
+           float bias = LMin[i] - (((LMax[i] - LMin[i])/(QCalMax[i] - QCalMin[i])) * QCalMin[i]) ;
+           float gain = (LMax[i]-LMin[i])/(QCalMax[i]-QCalMin[i]);
+           to << "Gain:     " << gain << endl;
+           to << "Bias:     " << bias << endl;
+           to << "LMin:     " << LMin[i] << endl;
+           to << "LMax:     " << LMax[i] << endl;
+           to << "QCalMin:  " << QCalMin[i] << endl;
+           to << "QCalMax:  " << QCalMax[i] << endl;
+           to.setf(ios_base::fixed, ios_base::floatfield);
+           to << "ULx:      " << ULx << endl;
+           to << "ULy:      " << ULy << endl;
+           to << "LRx:      " << LRx << endl;
+           to << "LRy:      " << LRy << endl;
+           to.close();
+       }
+       else 
+       {
+           cout << "Unsupport sensor number for MSS data" << endl;
+           return EXIT_FAILURE;
+       }
    }
    delete myMTL;
    myMTL = NULL;
