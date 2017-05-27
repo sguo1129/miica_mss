@@ -62,7 +62,7 @@ main(int argc, char *argv[]) {
    // -----------------------------------------------
    double ULx = atof(myMTL->get("CORNER_UL_PROJECTION_X_PRODUCT").c_str());
    double ULy = atof(myMTL->get("CORNER_UL_PROJECTION_Y_PRODUCT").c_str());
-   double LRx = atof(myMTL->get("CORNER_UL_PROJECTION_Y_PRODUCT").c_str());
+   double LRx = atof(myMTL->get("CORNER_LR_PROJECTION_X_PRODUCT").c_str());
    double LRy = atof(myMTL->get("CORNER_LR_PROJECTION_Y_PRODUCT").c_str());
 
    // Get LMin and LMax values for each band
