@@ -138,6 +138,7 @@ void GeoImage::readEntireFile()
    for (int i=0; i<nb; ++i) {
       theBand = theImage->GetRasterBand(i+1);
       ImgPtr = theData[i];
+      //      cout << "gdalType=" << gdalType << endl;
       int errorNo = theBand->RasterIO(GF_Read, 0, 0, ns, nl, ImgPtr, ns, nl, gdalType, 0, 0);
       if (errorNo != 0) fatalError("Error reading file");
    }
@@ -150,6 +151,7 @@ void GeoImage::writeEntireFile()
    for(int i=0; i<nb; ++i) {
       theBand = theImage->GetRasterBand(i+1);
       ImgPtr = theData[i];
+      //      cout << "gdalType2=" << gdalType << endl;
       int errorNo = theBand->RasterIO(GF_Write, 0, 0, ns, nl, ImgPtr, ns, nl, gdalType, 0, 0);
       if (errorNo != 0) fatalError("Error writing file");
    }

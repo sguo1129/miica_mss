@@ -13,5 +13,8 @@ g++ -O2 -o parseMTL parseMTL.cpp LandsatMTL.cpp utils.cpp -I/shared/users/sguo/g
 echo "   building calcTOA"
 g++ -O2 -o calcTOA calcTOA.cpp ImageP_gdal.cpp readInfo.cpp utils.cpp -I/shared/users/sguo/gdal-1.11.2/include -L/shared/users/sguo/gdal-1.11.2/lib -lm -lgdal  
 
+echo "   building clipImages"
+g++ -O2 -o clipImages clipImages.cpp readInfo.cpp -I/shared/users/sguo/gdal-1.11.2/include -L/shared/users/sguo/gdal-1.11.2/lib -lm -lgdal  
+
 echo "   building calcMIICA_noMask_MSS"
-g++ -O2 -o calcMIICA_noMask_MSS calcMIICA_noMask_MSS.cpp GeoImage.cpp -I/shared/users/sguo/gdal-1.11.2/include -L/shared/users/sguo/gdal-1.11.2/lib -lm -lgdal  
+g++ -O2 -o calcMIICA_noMask_MSS calcMIICA_noMask_MSS.cpp GeoImage.cpp readInfo.cpp -I/shared/users/sguo/gdal-1.11.2/include -L/shared/users/sguo/gdal-1.11.2/lib -lm -lgdal  

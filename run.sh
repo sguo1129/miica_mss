@@ -9,9 +9,7 @@
 ./parseMTL $1/$2"_MTL.txt"
 ./parseMTL $1/$3"_MTL.txt"
 scene=$2
-echo $scene
 sensor=${scene:2:1}
-echo $sensor
 if ( (("$sensor" == 4)) || (("$sensor" == 5)) ); then
    ./calcTOA -sc $1/$2"_B1_info.txt"
    ./calcTOA -sc $1/$2"_B2_info.txt"
@@ -33,5 +31,6 @@ elif ( (("$sensor" == 1)) || (("$sensor" == 2)) || (("$sensor" == 3)) ); then
 else
    echo "Invalid MSS sensor number"
 fi
+./clipImages $1/$2 $1/$3
 #rm $1/*_info.txt
 ./calcMIICA_noMask_MSS $1/$2 $1/$3 $1/$4
