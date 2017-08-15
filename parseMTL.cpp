@@ -14,6 +14,8 @@
 #include "LandsatMTL.h"
 #include "utils.h"
 
+#define MIN_DELTA 1e-6
+
 main(int argc, char *argv[]) {
 
    cout << "\nparseMTL v1.02, April 27, 2017\n";
@@ -161,20 +163,30 @@ main(int argc, char *argv[]) {
            to << "Acquisition-Date:    " << aqDate << endl;
            to << "Acquisition-Time:    " << aqTime << endl;
            to << "Sun-Elevation:       " << myMTL->get("SUN_ELEVATION") << endl;
-           float bias = LMin[i] - (((LMax[i] - LMin[i])/(QCalMax[i] - QCalMin[i])) * QCalMin[i]) ;
-           float gain = (LMax[i]-LMin[i])/(QCalMax[i]-QCalMin[i]);
-           to << "Gain:     " << gain << endl;
-           to << "Bias:     " << bias << endl;
-           to << "LMin:     " << LMin[i] << endl;
-           to << "LMax:     " << LMax[i] << endl;
-           to << "QCalMin:  " << QCalMin[i] << endl;
-           to << "QCalMax:  " << QCalMax[i] << endl;
-           to.setf(ios_base::fixed, ios_base::floatfield);
-           to << "ULx:      " << ULx << endl;
-           to << "ULy:      " << ULy << endl;
-           to << "LRx:      " << LRx << endl;
-           to << "LRy:      " << LRy << endl;
-           to.close();
+	   if (QCalMax[i] < MIN_DELTA && QCalMin[i] < MIN_DELTA)
+	   {
+               cout << "Band " << i+4 << "does not have valid data" << endl;
+               cout << "Not enough bands (4) for MICCA algorithm working well" << endl;
+               cout << "Exiting..." << endl;               
+               return EXIT_FAILURE;
+	   }
+           else
+	   {
+               float bias = LMin[i] - (((LMax[i] - LMin[i])/(QCalMax[i] - QCalMin[i])) * QCalMin[i]) ;
+               float gain = (LMax[i]-LMin[i])/(QCalMax[i]-QCalMin[i]);
+               to << "Gain:     " << gain << endl;
+               to << "Bias:     " << bias << endl;
+               to << "LMin:     " << LMin[i] << endl;
+               to << "LMax:     " << LMax[i] << endl;
+               to << "QCalMin:  " << QCalMin[i] << endl;
+               to << "QCalMax:  " << QCalMax[i] << endl;
+               to.setf(ios_base::fixed, ios_base::floatfield);
+               to << "ULx:      " << ULx << endl;
+               to << "ULy:      " << ULy << endl;
+               to << "LRx:      " << LRx << endl;
+               to << "LRy:      " << LRy << endl;
+               to.close();
+	   }
        }
        else if (sceneName.at(2) == '4' || sceneName.at(2) == '5')
        {
@@ -198,20 +210,30 @@ main(int argc, char *argv[]) {
            to << "Acquisition-Date:    " << aqDate << endl;
            to << "Acquisition-Time:    " << aqTime << endl;
            to << "Sun-Elevation:       " << myMTL->get("SUN_ELEVATION") << endl;
-           float bias = LMin[i] - (((LMax[i] - LMin[i])/(QCalMax[i] - QCalMin[i])) * QCalMin[i]) ;
-           float gain = (LMax[i]-LMin[i])/(QCalMax[i]-QCalMin[i]);
-           to << "Gain:     " << gain << endl;
-           to << "Bias:     " << bias << endl;
-           to << "LMin:     " << LMin[i] << endl;
-           to << "LMax:     " << LMax[i] << endl;
-           to << "QCalMin:  " << QCalMin[i] << endl;
-           to << "QCalMax:  " << QCalMax[i] << endl;
-           to.setf(ios_base::fixed, ios_base::floatfield);
-           to << "ULx:      " << ULx << endl;
-           to << "ULy:      " << ULy << endl;
-           to << "LRx:      " << LRx << endl;
-           to << "LRy:      " << LRy << endl;
-           to.close();
+	   if (QCalMax[i] < MIN_DELTA && QCalMin[i] < MIN_DELTA)
+	   {
+               cout << "Band " << i+4 << "does not have valid data" << endl;
+               cout << "Not enough bands (4) for MICCA algorithm working well" << endl;
+               cout << "Exiting..." << endl;               
+               return EXIT_FAILURE;
+	   }
+           else
+	   {
+               float bias = LMin[i] - (((LMax[i] - LMin[i])/(QCalMax[i] - QCalMin[i])) * QCalMin[i]) ;
+               float gain = (LMax[i]-LMin[i])/(QCalMax[i]-QCalMin[i]);
+               to << "Gain:     " << gain << endl;
+               to << "Bias:     " << bias << endl;
+               to << "LMin:     " << LMin[i] << endl;
+               to << "LMax:     " << LMax[i] << endl;
+               to << "QCalMin:  " << QCalMin[i] << endl;
+               to << "QCalMax:  " << QCalMax[i] << endl;
+               to.setf(ios_base::fixed, ios_base::floatfield);
+               to << "ULx:      " << ULx << endl;
+               to << "ULy:      " << ULy << endl;
+               to << "LRx:      " << LRx << endl;
+               to << "LRy:      " << LRy << endl;
+               to.close();
+	   }
        }
        else 
        {
