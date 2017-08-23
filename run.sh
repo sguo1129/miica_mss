@@ -183,7 +183,7 @@ else
   exit
 fi
 
-#rm $1/*_info.txt
+rm $1/*_info.txt
 ./calcMIICA_noMask_MSS $1/$2 $1/$3 $1/$4
 if [ $? -eq 0 ]
 then

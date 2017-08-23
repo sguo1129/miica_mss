@@ -1,16 +1,17 @@
-compiled in code directory by running ./bild
+compiled in code directory by running ./build
 
 The script needs 4 input variables, the first one is data directory name, the second one
-is first processing scene_name name, the third one is second processing name, the fourth one is 
-output name. The input and final output files are in the data directory, and the temporary text 
+is first processing scene_name, the third one is second processing scene_name, the fourth one is 
+final output image root filename (All output filenames are output image root filename plus product name
+(e.g. ndvi, nbr, micca). The input and final output files are in the data directory, and the temporary text 
 files are in the current code directory and will be removed after their usages
 
 e.g. ./run.sh /shared/users/sguo/mss_data LM50450301985132AAA04 LM50450301986135AAA03 LM5_045030_1985_1986
-  or: ./run.sh  /shared/users/sguo/mss_data/mss_1_3 LM20490291978151AAA02 LM30490301979173AAA05 LM23_049029_1978_1979
+  or: ./run.sh  /shared/users/sguo/mss_data/mss_2_3 LM20490291978151AAA02 LM30490301979173AAA05 LM23_049029_1978_1979
 
 Note: 1. This code is only working for Landsat Archive Pre-Collection Level-1 L1-5
          MSS data, with some modification of filename and metadata, it can work
          for Landsat Legacy L1-5 MSS data 
       2. GDAL library is needed for compiling the code, on HPC server, gdal vesion 1.11.2 is tested and it is located
-         st /shared/users/sguo/gdal-1.11.2
+         at /shared/users/sguo/gdal-1.11.2
 
