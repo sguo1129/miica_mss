@@ -3,11 +3,11 @@ code is compiled in code directory by running ./build
 code is run with ./run.sh shell script.
 
 The run.sh script needs 4 input variables, the first one is data directory name, the second one
-is first input processing scene_name, the third one is second inpu processing scene_name,
+is first input processing scene_name, the third one is second input processing scene_name,
 the fourth one is the final output image root filename (All output filenames are output image
 root filename plus product name (e.g. ndvi, nbr, micca). The input and final output files are
-also in the data directory, and the temporary text files are in the current code directory and
-will be removed after their usages
+both in the data directory, and the intermediate files are in the current code directory and
+will be removed after their usages.
 
 Example for running the code from command line: 
 ./run.sh /shared/users/sguo/mss_data LM50450301985132AAA04 LM50450301986135AAA03 LM5_045030_1985_1986
